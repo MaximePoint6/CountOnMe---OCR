@@ -95,7 +95,7 @@ class Calculation {
         textView.append(" = \(operationsToReduce.first!)")
     }
 
-    func prorityOperatorIndex(operationsToReduce: [String]) -> Int? {
+    private func prorityOperatorIndex(operationsToReduce: [String]) -> Int? {
         var firstIndex: Int?
         if let indexOfFirstDivison = operationsToReduce.firstIndex(of: "/"),
             let indexOfFirstMultiplication = operationsToReduce.firstIndex(of: "x") {

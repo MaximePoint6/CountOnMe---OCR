@@ -19,7 +19,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         setupDecimalSeparator()
         textView.isEditable = false
-        addTextToView()
+        updateTextView()
     }
 
     private func setupDecimalSeparator() {
@@ -28,13 +28,13 @@ class ViewController: UIViewController {
         }
     }
 
-    private func addTextToView() {
+    private func updateTextView() {
         textView.text = calculation.textView
     }
 
     private func reset() {
         calculation.textView = ""
-        addTextToView()
+        updateTextView()
     }
 
     // MARK: View actions
@@ -48,7 +48,7 @@ class ViewController: UIViewController {
         if (numberText == calculation.localDecimalSeparator && calculation.canAddOperatorOrDecimal
                               && !calculation.numberHasDecimal) || (numberText != calculation.localDecimalSeparator) {
                               calculation.textView.append(numberText)
-                              addTextToView()
+                              updateTextView()
         }
     }
 
@@ -58,7 +58,7 @@ class ViewController: UIViewController {
         } else {
             if calculation.canAddOperatorOrDecimal {
                 calculation.textView.append(" + ")
-                addTextToView()
+                updateTextView()
             }
         }
     }
@@ -69,7 +69,7 @@ class ViewController: UIViewController {
         } else {
             if calculation.canAddOperatorOrDecimal {
                 calculation.textView.append(" - ")
-                addTextToView()
+                updateTextView()
             }
         }
     }
@@ -80,7 +80,7 @@ class ViewController: UIViewController {
         } else {
             if calculation.canAddOperatorOrDecimal {
                 calculation.textView.append(" / ")
-                addTextToView()
+                updateTextView()
             }
         }
     }
@@ -91,7 +91,7 @@ class ViewController: UIViewController {
         } else {
             if calculation.canAddOperatorOrDecimal {
                 calculation.textView.append(" x ")
-                addTextToView()
+                updateTextView()
             }
         }
     }
@@ -110,7 +110,7 @@ class ViewController: UIViewController {
             guard calculation.isNotDivisionByZero else {
                 return divideByZeroError()
             }
-            addTextToView()
+            updateTextView()
         }
     }
 
