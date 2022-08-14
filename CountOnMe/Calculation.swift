@@ -51,31 +51,61 @@ class Calculation {
 
         // Iterate over operations while an operand still here
         while operationsToReduce.count >= 3 {
-            let left = Decimal(string: operationsToReduce[0], locale: Locale.current)!
-            let operand = operationsToReduce[1]
-            let right = Decimal(string: operationsToReduce[2], locale: Locale.current)!
+
+            var leftIndex: Int
+            var operatorIndex: Int
+            var rightIndex: Int
+
+            if let priorityOperatorIndex = prorityOperatorIndex(operationsToReduce: operationsToReduce) {
+                operatorIndex = priorityOperatorIndex
+                leftIndex = operatorIndex - 1
+                rightIndex = operatorIndex + 1
+            } else {
+                operatorIndex = 1
+                leftIndex = 0
+                rightIndex = 2
+            }
+
+            let leftNumber = Decimal(string: operationsToReduce[leftIndex], locale: Locale.current)!
+            let operand = operationsToReduce[operatorIndex]
+            let rightNumber = Decimal(string: operationsToReduce[rightIndex], locale: Locale.current)!
 
             var result: Decimal = 0
             switch operand {
-            case "+": result = left + right
-            case "-": result = left - right
+            case "+": result = leftNumber + rightNumber
+            case "-": result = leftNumber - rightNumber
             case "/":
-                if right == 0 {
+                if rightNumber == 0 {
                     isNotDivisionByZero = false
                 } else {
                     isNotDivisionByZero = true
-                    result = left / right
+                    result = leftNumber / rightNumber
                 }
-            case "x": result = left * right
+            case "x": result = leftNumber * rightNumber
             default:
                 print("Unknown operator !")
             }
 
             let stringResult = result.convertToStringWithLocalCurrent()
-            operationsToReduce = Array(operationsToReduce.dropFirst(3))
-            operationsToReduce.insert("\(stringResult)", at: 0)
+            operationsToReduce.remove(at: rightIndex)
+            operationsToReduce.remove(at: operatorIndex)
+            operationsToReduce.remove(at: leftIndex)
+            operationsToReduce.insert("\(stringResult)", at: leftIndex)
         }
         textView.append(" = \(operationsToReduce.first!)")
+    }
+
+    func prorityOperatorIndex(operationsToReduce: [String]) -> Int? {
+        var firstIndex: Int?
+        if let indexOfFirstDivison = operationsToReduce.firstIndex(of: "/"),
+            let indexOfFirstMultiplication = operationsToReduce.firstIndex(of: "x") {
+            firstIndex = min(indexOfFirstDivison, indexOfFirstMultiplication)
+        } else if let indexOfFirstDivison = operationsToReduce.firstIndex(of: "/") {
+            firstIndex = indexOfFirstDivison
+        } else if let indexOfFirstMultiplication = operationsToReduce.firstIndex(of: "x") {
+            firstIndex = indexOfFirstMultiplication
+        }
+        return firstIndex
     }
 }
 
@@ -85,7 +115,7 @@ extension Decimal {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
         numberFormatter.locale = .current
-        numberFormatter.maximumFractionDigits = 20
+        numberFormatter.maximumFractionDigits = 7
         numberFormatter.groupingSeparator = ""
 
         let result = numberFormatter.string(from: text) ?? ""
