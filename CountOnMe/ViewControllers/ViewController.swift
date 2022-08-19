@@ -60,11 +60,12 @@ class ViewController: UIViewController {
     /// It checks if an alert message should be displayed on the screen and updating the TextView.
     /// - Parameter sender: UIButton
     @IBAction func tappedEqualButton(_ sender: UIButton) {
-        calculation.addEqualOperator()
         if calculation.expressionHaveEnoughElement == false {
             alert(title: "Erreur !",
                   message: "Entrez une expression correcte composée d'au moins 2 nombres séparés par un opérateur.")
-        } else if calculation.isNotDivisionByZero == false {
+        }
+        calculation.addEqualOperator()
+        if calculation.isNotDivisionByZero == false {
             alert(title: "Erreur !",
                   message: "Impossible de diviser par zero.")
         }
