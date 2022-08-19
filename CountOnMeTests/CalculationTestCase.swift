@@ -245,18 +245,10 @@ class CalculationTestCase: XCTestCase {
         XCTAssertEqual(calculation.textView, "2 ")
     }
 
-    // MARK: reset
-    func testGiven2Point5Multiplied2_WhenTestingAddEqualOperator_ThenItShouldBeTextViewIsEmpty() {
+    // MARK: WhenTestingReset
+    func testGiven2Point5Multiplied2_WhenTestingReset_ThenItShouldBeTextViewIsEmpty() {
         calculation.textView = "2\(calculation.localDecimalSeparator)5 x 2"
         calculation.reset()
         XCTAssertEqual(calculation.textView, "")
     }
-
-    // XCTAssert
-    // XCTAssertEqual
-    // XCTAssertTrue
-    // XCTAssertFalse
-    // XCTAssertNil
-    // XCTAssertNotNi
-
 }

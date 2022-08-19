@@ -12,10 +12,12 @@ class Calculation {
 
     var textView: String = "1 + 1 = 2"
 
+    // Variable separating the textview (at each space) into an array of String elements
     var elements: [String] {
         return textView.split(separator: " ").map { "\($0)" }
     }
 
+    // Variable retrieving the local decimal separator
     var localDecimalSeparator: String = Locale.current.decimalSeparator ?? "."
 
     // MARK: Error check computed variables
@@ -45,6 +47,10 @@ class Calculation {
     }
 
     // MARK: function for add composant or reset textview
+    /// Function checking : if the operation has a result (if yes, then it resets the screen) and
+    /// if a number or a decimal separator can be added to the screen (if yes, then the number is added in the textView,
+    /// if not, nothing happens)
+    /// - Parameter numberText: a number of text type
     func addNumber(numberText: String) {
         if hasResult {
             reset()
@@ -55,6 +61,10 @@ class Calculation {
         }
     }
 
+    /// Function checking : if the operation has a result (if yes, then it resets the screen) and
+    /// if a operator can be added to the screen (if yes, then the operator is added in the textView, if not,
+    /// nothing happens)
+    /// - Parameter numberText: a operator of text type
     func addOperator(operatorText: String) {
         if hasResult {
             reset()
@@ -65,6 +75,10 @@ class Calculation {
         }
     }
 
+    /// Function checking : if the operation has a result (if yes, then it resets the screen) and
+    /// if a equal operator can be added to the screen (if yes, then the equal operator is added in the textView and
+    /// the operation result function is called, if not , nothing happens)
+    /// - Parameter numberText: a operator of text type
     func addEqualOperator() {
         if hasResult {
             reset()
@@ -75,19 +89,21 @@ class Calculation {
             guard canAddOperatorOrDecimal else {
                 return
             }
-            operationResult()
+            operationProcessing()
             guard isNotDivisionByZero else {
                 return reset()
             }
         }
     }
 
+    /// Function deleting the content of the textview
     func reset() {
         textView = ""
     }
 
     // MARK: function for calculation
-    private func operationResult() {
+    /// Function performing the operation and adding the result to the screen
+    private func operationProcessing() {
         // Create local copy of operations
         var operationsToReduce = elements
 
@@ -138,6 +154,10 @@ class Calculation {
         textView.append(" = \(operationsToReduce.first!)")
     }
 
+    /// Function returning the index of the priority operator to correctly perform an operation.
+    /// - Parameter operationsToReduce: Array of type string including the elements that
+    /// remain to be calculated in the operation.
+    /// - Returns: index of the priority operator in the calculation
     private func prorityOperatorIndex(operationsToReduce: [String]) -> Int? {
         var firstIndex: Int?
         if let indexOfFirstDivison = operationsToReduce.firstIndex(of: Operator.divider.rawValue),
@@ -150,10 +170,11 @@ class Calculation {
         }
         return firstIndex
     }
-    // utiliser l'enum
 }
 
 extension Decimal {
+    /// Function converting a decimal into a string taking into account the local decimal separator
+    /// - Returns: the result of the conversion from decimal to string
     func convertToStringWithLocalCurrent() -> String {
         let text: NSNumber = self as NSNumber
         let numberFormatter = NumberFormatter()
