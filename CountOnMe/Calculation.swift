@@ -27,8 +27,8 @@ class Calculation {
         guard let lastElements = elements.last else {
             return false
         }
-    return lastElements != "+" && lastElements != "-" && lastElements != "/" && lastElements != "x" &&
-        lastElements.last! != "," && lastElements.last! != "."
+        let operators: [String] = Operator.allCases.map { $0.rawValue }
+        return !operators.contains(lastElements) && String(lastElements.last!) != localDecimalSeparator
     }
 
     var numberHasDecimal: Bool {
@@ -44,8 +44,50 @@ class Calculation {
         return textView.firstIndex(of: "=") != nil
     }
 
-    // MARK: fonction for calculation
-    func operationResult() {
+    // MARK: function for add composant or reset textview
+    func addNumber(numberText: String) {
+        if hasResult {
+            reset()
+        }
+        if (numberText == localDecimalSeparator && canAddOperatorOrDecimal
+            && !numberHasDecimal) || (numberText != localDecimalSeparator) {
+            textView.append(numberText)
+        }
+    }
+
+    func addOperator(operatorText: String) {
+        if hasResult {
+            reset()
+        } else {
+            if canAddOperatorOrDecimal {
+                textView.append(" \(operatorText) ")
+            }
+        }
+    }
+
+    func addEqualOperator() {
+        if hasResult {
+            reset()
+        } else {
+            guard expressionHaveEnoughElement else {
+                return
+            }
+            guard canAddOperatorOrDecimal else {
+                return
+            }
+            operationResult()
+            guard isNotDivisionByZero else {
+                return reset()
+            }
+        }
+    }
+
+    func reset() {
+        textView = ""
+    }
+
+    // MARK: function for calculation
+    private func operationResult() {
         // Create local copy of operations
         var operationsToReduce = elements
 
@@ -72,18 +114,19 @@ class Calculation {
 
             var result: Decimal = 0
             switch operand {
-            case "+": result = leftNumber + rightNumber
-            case "-": result = leftNumber - rightNumber
-            case "/":
+            case Operator.plus.rawValue: result = leftNumber + rightNumber
+            case Operator.minus.rawValue: result = leftNumber - rightNumber
+            case Operator.divider.rawValue:
                 if rightNumber == 0 {
                     isNotDivisionByZero = false
                 } else {
                     isNotDivisionByZero = true
                     result = leftNumber / rightNumber
                 }
-            case "x": result = leftNumber * rightNumber
+            case Operator.multiplier.rawValue: result = leftNumber * rightNumber
             default:
                 print("Unknown operator !")
+                return reset()
             }
 
             let stringResult = result.convertToStringWithLocalCurrent()
@@ -97,16 +140,17 @@ class Calculation {
 
     private func prorityOperatorIndex(operationsToReduce: [String]) -> Int? {
         var firstIndex: Int?
-        if let indexOfFirstDivison = operationsToReduce.firstIndex(of: "/"),
-            let indexOfFirstMultiplication = operationsToReduce.firstIndex(of: "x") {
+        if let indexOfFirstDivison = operationsToReduce.firstIndex(of: Operator.divider.rawValue),
+           let indexOfFirstMultiplication = operationsToReduce.firstIndex(of: Operator.multiplier.rawValue) {
             firstIndex = min(indexOfFirstDivison, indexOfFirstMultiplication)
-        } else if let indexOfFirstDivison = operationsToReduce.firstIndex(of: "/") {
+        } else if let indexOfFirstDivison = operationsToReduce.firstIndex(of: Operator.divider.rawValue) {
             firstIndex = indexOfFirstDivison
-        } else if let indexOfFirstMultiplication = operationsToReduce.firstIndex(of: "x") {
+        } else if let indexOfFirstMultiplication = operationsToReduce.firstIndex(of: Operator.multiplier.rawValue) {
             firstIndex = indexOfFirstMultiplication
         }
         return firstIndex
     }
+    // utiliser l'enum
 }
 
 extension Decimal {
@@ -119,6 +163,6 @@ extension Decimal {
         numberFormatter.groupingSeparator = ""
 
         let result = numberFormatter.string(from: text) ?? ""
-            return result
+        return result
     }
 }
