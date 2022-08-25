@@ -83,15 +83,12 @@ class Calculation {
         if hasResult {
             reset()
         } else {
-            guard expressionHaveEnoughElement else {
-                return
-            }
-            guard canAddOperatorOrDecimal else {
+            guard expressionHaveEnoughElement && canAddOperatorOrDecimal else {
                 return
             }
             operationProcessing()
             guard isNotDivisionByZero else {
-                return reset()
+                return
             }
         }
     }
@@ -99,6 +96,7 @@ class Calculation {
     /// Function deleting the content of the textview
     func reset() {
         textView = ""
+        isNotDivisionByZero = true
     }
 
     // MARK: function for calculation

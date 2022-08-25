@@ -68,6 +68,7 @@ class ViewController: UIViewController {
         if calculation.isNotDivisionByZero == false {
             alert(title: "Erreur !",
                   message: "Impossible de diviser par zero.")
+            calculation.reset()
         }
         updateTextView()
     }
