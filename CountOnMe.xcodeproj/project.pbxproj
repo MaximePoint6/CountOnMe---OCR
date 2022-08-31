@@ -12,6 +12,7 @@
 		1FA43BD8224E569900F565CB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FA43BD6224E569900F565CB /* Main.storyboard */; };
 		1FA43BDA224E569A00F565CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1FA43BD9224E569A00F565CB /* Assets.xcassets */; };
 		1FA43BDD224E569A00F565CB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FA43BDB224E569A00F565CB /* LaunchScreen.storyboard */; };
+		CAE612DA28BDF90100D03BD5 /* ProtocolModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE612D928BDF90100D03BD5 /* ProtocolModel.swift */; };
 		CAE8F34628A9446400B48549 /* CalculationTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F34528A9446400B48549 /* CalculationTestCase.swift */; };
 		CAE8F36C28AF6ABE00B48549 /* Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE8F36B28AF6ABE00B48549 /* Operator.swift */; };
 		CAF580D028A691A3009EDE39 /* Calculation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF580CF28A691A3009EDE39 /* Calculation.swift */; };
@@ -35,6 +36,7 @@
 		1FA43BD9224E569A00F565CB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1FA43BDC224E569A00F565CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1FA43BDE224E569A00F565CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CAE612D928BDF90100D03BD5 /* ProtocolModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolModel.swift; sourceTree = "<group>"; };
 		CAE8F34328A9446400B48549 /* CountOnMeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CountOnMeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAE8F34528A9446400B48549 /* CalculationTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculationTestCase.swift; sourceTree = "<group>"; };
 		CAE8F36B28AF6ABE00B48549 /* Operator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Operator.swift; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 			isa = PBXGroup;
 			children = (
 				CAF580CF28A691A3009EDE39 /* Calculation.swift */,
+				CAE612D928BDF90100D03BD5 /* ProtocolModel.swift */,
 				CAE8F36B28AF6ABE00B48549 /* Operator.swift */,
 			);
 			name = Models;
@@ -257,6 +260,7 @@
 				CAF580D028A691A3009EDE39 /* Calculation.swift in Sources */,
 				CAE8F36C28AF6ABE00B48549 /* Operator.swift in Sources */,
 				1FA43BD5224E569900F565CB /* ViewController.swift in Sources */,
+				CAE612DA28BDF90100D03BD5 /* ProtocolModel.swift in Sources */,
 				1FA43BD3224E569900F565CB /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

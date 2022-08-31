@@ -10,11 +10,12 @@ import Foundation
 
 class Calculation {
 
-    var textView: String = "1 + 1 = 2"
+    var delegate: ProtocolModel?
+    var stringOperation: String = "1 + 1 = 2"
 
     // Variable separating the textview (at each space) into an array of String elements
     var elements: [String] {
-        return textView.split(separator: " ").map { "\($0)" }
+        return stringOperation.split(separator: " ").map { "\($0)" }
     }
 
     // Variable retrieving the local decimal separator
@@ -40,10 +41,8 @@ class Calculation {
         return lastElements.contains(localDecimalSeparator)
     }
 
-    var isNotDivisionByZero: Bool = true
-
     var hasResult: Bool {
-        return textView.firstIndex(of: "=") != nil
+        return stringOperation.firstIndex(of: "=") != nil
     }
 
     // MARK: function for add composant or reset textview
@@ -57,7 +56,8 @@ class Calculation {
         }
         if (numberText == localDecimalSeparator && canAddOperatorOrDecimal
             && !numberHasDecimal) || (numberText != localDecimalSeparator) {
-            textView.append(numberText)
+            stringOperation.append(numberText)
+            self.delegate?.stringOperationWasUpdated()
         }
     }
 
@@ -70,7 +70,8 @@ class Calculation {
             reset()
         } else {
             if canAddOperatorOrDecimal {
-                textView.append(" \(operatorText) ")
+                stringOperation.append(" \(operatorText) ")
+                self.delegate?.stringOperationWasUpdated()
             }
         }
     }
@@ -84,19 +85,18 @@ class Calculation {
             reset()
         } else {
             guard expressionHaveEnoughElement && canAddOperatorOrDecimal else {
+                self.delegate?.checkingExpressionHaveEnoughElement(expressionHaveEnoughElement:
+                                                                        expressionHaveEnoughElement)
                 return
             }
             operationProcessing()
-            guard isNotDivisionByZero else {
-                return
-            }
         }
     }
 
     /// Function deleting the content of the textview
     func reset() {
-        textView = ""
-        isNotDivisionByZero = true
+        stringOperation = ""
+        self.delegate?.stringOperationWasUpdated()
     }
 
     // MARK: function for calculation
@@ -132,9 +132,10 @@ class Calculation {
             case Operator.minus.rawValue: result = leftNumber - rightNumber
             case Operator.divider.rawValue:
                 if rightNumber == 0 {
-                    isNotDivisionByZero = false
+                    self.delegate?.checkingIsDivisionByZero(isDivisionByZero: true)
+                    reset()
+                    return
                 } else {
-                    isNotDivisionByZero = true
                     result = leftNumber / rightNumber
                 }
             case Operator.multiplier.rawValue: result = leftNumber * rightNumber
@@ -149,7 +150,8 @@ class Calculation {
             operationsToReduce.remove(at: leftIndex)
             operationsToReduce.insert("\(stringResult)", at: leftIndex)
         }
-        textView.append(" = \(operationsToReduce.first!)")
+        stringOperation.append(" = \(operationsToReduce.first!)")
+        self.delegate?.stringOperationWasUpdated()
     }
 
     /// Function returning the index of the priority operator to correctly perform an operation.
