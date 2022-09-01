@@ -76,8 +76,8 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: ProtocolModel {
-    func stringOperationWasUpdated() {
-            textView.text = calculation.stringOperation
+    func stringOperationWasUpdated(stringOperation: String) {
+            textView.text = stringOperation
     }
 
     func checkingIsDivisionByZero(isDivisionByZero: Bool) {

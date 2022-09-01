@@ -10,7 +10,7 @@ import Foundation
 
 class Calculation {
 
-    var delegate: ProtocolModel?
+    weak var delegate: ProtocolModel?
     var stringOperation: String = "1 + 1 = 2"
 
     // Variable separating the textview (at each space) into an array of String elements
@@ -57,7 +57,7 @@ class Calculation {
         if (numberText == localDecimalSeparator && canAddOperatorOrDecimal
             && !numberHasDecimal) || (numberText != localDecimalSeparator) {
             stringOperation.append(numberText)
-            self.delegate?.stringOperationWasUpdated()
+            self.delegate?.stringOperationWasUpdated(stringOperation: stringOperation)
         }
     }
 
@@ -71,7 +71,7 @@ class Calculation {
         } else {
             if canAddOperatorOrDecimal {
                 stringOperation.append(" \(operatorText) ")
-                self.delegate?.stringOperationWasUpdated()
+                self.delegate?.stringOperationWasUpdated(stringOperation: stringOperation)
             }
         }
     }
@@ -96,7 +96,7 @@ class Calculation {
     /// Function deleting the content of the textview
     func reset() {
         stringOperation = ""
-        self.delegate?.stringOperationWasUpdated()
+        self.delegate?.stringOperationWasUpdated(stringOperation: stringOperation)
     }
 
     // MARK: function for calculation
@@ -151,7 +151,7 @@ class Calculation {
             operationsToReduce.insert("\(stringResult)", at: leftIndex)
         }
         stringOperation.append(" = \(operationsToReduce.first!)")
-        self.delegate?.stringOperationWasUpdated()
+        self.delegate?.stringOperationWasUpdated(stringOperation: stringOperation)
     }
 
     /// Function returning the index of the priority operator to correctly perform an operation.

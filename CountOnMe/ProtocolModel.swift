@@ -8,8 +8,8 @@
 
 import Foundation
 
-protocol ProtocolModel {
-    func stringOperationWasUpdated()
+protocol ProtocolModel: AnyObject {
+    func stringOperationWasUpdated(stringOperation: String)
     func checkingIsDivisionByZero(isDivisionByZero: Bool)
     func checkingExpressionHaveEnoughElement(expressionHaveEnoughElement: Bool)
 }
