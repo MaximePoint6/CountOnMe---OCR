@@ -11,6 +11,10 @@ import Foundation
 class Calculation {
 
     weak var delegate: ProtocolModel?
+
+    // Variable retrieving the local decimal separator
+    var localDecimalSeparator: String = Locale.current.decimalSeparator ?? "."
+
     var stringOperation: String = "1 + 1 = 2"
 
     // Variable separating the textview (at each space) into an array of String elements
@@ -18,15 +22,12 @@ class Calculation {
         return stringOperation.split(separator: " ").map { "\($0)" }
     }
 
-    // Variable retrieving the local decimal separator
-    var localDecimalSeparator: String = Locale.current.decimalSeparator ?? "."
-
     // MARK: Error check computed variables
-    var expressionHaveEnoughElement: Bool {
+    private var expressionHaveEnoughElement: Bool {
         return elements.count >= 3
     }
 
-    var canAddOperatorOrDecimal: Bool {
+    private var canAddOperatorOrDecimal: Bool {
         guard let lastElements = elements.last else {
             return false
         }
@@ -34,14 +35,14 @@ class Calculation {
         return !operators.contains(lastElements) && String(lastElements.last!) != localDecimalSeparator
     }
 
-    var numberHasDecimal: Bool {
+    private var numberHasDecimal: Bool {
         guard let lastElements = elements.last else {
             return false
         }
         return lastElements.contains(localDecimalSeparator)
     }
 
-    var hasResult: Bool {
+    private var hasResult: Bool {
         return stringOperation.firstIndex(of: "=") != nil
     }
 
